@@ -1,3 +1,5 @@
+<!-- every section of next sections must be in a new component with its inputs and outputs emiters  -->
+<!-- logout button -->
 <div class="article-wrapper">
   <div class="thumbnail biege">
     <div class="caption create-article log-out" (click)="logout()">
@@ -5,7 +7,8 @@
     </div>
   </div>
 </div>
-
+<!-- end of logout button -->
+<!-- creatorName and creatorRol -->
 <div class="article-wrapper">
   <div class="thumbnail biege">
     <div class="caption create-article usermame">
@@ -14,7 +17,9 @@
     </div>
   </div>
 </div>
+<!--end of creatorName and creatorRol -->
 
+<!-- add article button -->
 <div class="article-wrapper" *ngIf="activeUser.userRole != userRoles.guest">
   <div class="thumbnail biege">
     <div class="caption create-article" data-toggle="modal" data-target="#articleModal" (click)="addNewArticle()"> Create
@@ -22,7 +27,9 @@
     </div>
   </div>
 </div>
+<!--end add article button -->
 
+<!-- articles section -->
 <div class="article-wrapper" *ngFor="let singleArticle of articles;let i = index">
   <div class="thumbnail" [ngClass]="{'my-article': singleArticle.creatorId == activeUser.id || activeUser.userRole == userRoles.admin }">
     <div class="caption">
@@ -39,12 +46,18 @@
     </div>
   </div>
 </div>
+<!--end of articles section -->
 
+
+<!-- Modal that add or edit article -->
 <div class="modal fade" id="articleModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="articleModalLabel">Create Article</h5>
+        <h5 class="modal-title" id="articleModalLabel">
+          <span *ngIf="isNewArticle && !isEditArticle"> Create Article</span>
+          <span *ngIf="isEditArticle && !isNewArticle"> Edit Article</span>
+        </h5>
       </div>
       <div class="modal-body">
         <form (ngSubmit)="submitArticle(articleForm)" name="articleForm" #articleForm="ngForm">
@@ -66,8 +79,8 @@
           </div>
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetEditAndNewArticle(articleForm)" #closeModal>Close</button>
           <button type="submit" *ngIf="isNewArticle && !isEditArticle" [disabled]="articleForm.form.invalid" class="btn btn-primary">Save</button>
-          <button type="submit" *ngIf="isEditArticle && !isNewArticle" [disabled]="articleForm.form.invalid" class="btn btn-primary">Save
-            Changes
+          <button type="submit" *ngIf="isEditArticle && !isNewArticle" [disabled]="articleForm.form.invalid" class="btn btn-primary">
+            Save Changes
           </button>
         </form>
       </div>
@@ -75,3 +88,4 @@
     </div>
   </div>
 </div>
+<!--end Modal that add or edit article -->

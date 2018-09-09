@@ -12,32 +12,37 @@ import { UserRoles } from '../enums/user-roles.enum';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  // close button element
   @ViewChild('closeModal') closeModal: ElementRef;
   articles: ArticleModel[] = [];
+  // data that filled in the modal
   articleData: ArticleModel = {
     title: '',
     body: ''
   };
+  // logged in user
   activeUser: UserModel;
+  // user roles
   userRoles: object;
   isNewArticle = false;
   isEditArticle = false;
 
+  // declare athenticate and dashboard service
   constructor(private authenticate: AuthenticationService,
     private dashboardService: DashboardService) { }
 
   ngOnInit() {
+    // read from UserRoles enum
     this.userRoles = UserRoles;
+    // getting active user
     this.activeUser = JSON.parse(localStorage['activeUser']);
+    // get articles
     if (localStorage['articles']) {
       this.articles = JSON.parse(localStorage['articles']);
     }
   }
 
-  save() {
-    this.closeModal.nativeElement.click();
-  }
-
+  // edit and create article
   submitArticle(articleForm: NgForm) {
     if (this.isEditArticle) {
       this.editSelectedArticle(articleForm);
@@ -46,6 +51,7 @@ export class DashboardComponent implements OnInit {
     }
     this.closeModal.nativeElement.click();
   }
+
 
   editSelectedArticle(articleForm: NgForm) {
     const article: ArticleModel = Object.assign({}, this.articleData);
@@ -70,7 +76,7 @@ export class DashboardComponent implements OnInit {
     this.isNewArticle = false;
   }
 
-
+  // reset article form
   resetArticleForm(articleForm: NgForm) {
     articleForm.form.markAsPristine();
     articleForm.form.markAsUntouched();
@@ -81,18 +87,22 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+  // logout
   logout() {
     this.authenticate.logout();
   }
 
+  // raise new article flag control the modal
   addNewArticle() {
     this.isNewArticle = true;
   }
 
+  // raise edit article flag control the modal
   editArticle(article: ArticleModel) {
     this.articleData = article;
     this.isEditArticle = true;
   }
+
 
   deleteArticle(index) {
     const confirmDelete = confirm('Are you sure you want to delete this article?');

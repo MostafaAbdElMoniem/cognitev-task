@@ -422,7 +422,7 @@ module.exports = ":host {\r\n    display: -webkit-box;\r\n    display: -ms-flexb
 /***/ "./src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"article-wrapper\">\n  <div class=\"thumbnail biege\">\n    <div class=\"caption create-article log-out\" (click)=\"logout()\">\n      Log out\n    </div>\n  </div>\n</div>\n\n<div class=\"article-wrapper\">\n  <div class=\"thumbnail biege\">\n    <div class=\"caption create-article usermame\">\n      <span class=\"role\">{{activeUser.userRole}}</span>\n      <span class=\"user\">({{activeUser.username}})</span>\n    </div>\n  </div>\n</div>\n\n<div class=\"article-wrapper\" *ngIf=\"activeUser.userRole != userRoles.guest\">\n  <div class=\"thumbnail biege\">\n    <div class=\"caption create-article\" data-toggle=\"modal\" data-target=\"#articleModal\" (click)=\"addNewArticle()\"> Create\n      Article\n    </div>\n  </div>\n</div>\n\n<div class=\"article-wrapper\" *ngFor=\"let singleArticle of articles;let i = index\">\n  <div class=\"thumbnail\" [ngClass]=\"{'my-article': singleArticle.creatorId == activeUser.id || activeUser.userRole == userRoles.admin }\">\n    <div class=\"caption\">\n      <h3>{{singleArticle.title}}</h3>\n      <p>{{singleArticle.body}}</p>\n\n      <div class=\"by-wrapper\">\n        Creator: <span>({{singleArticle.creatorName}})</span>\n      </div>\n      <div class=\"edit-delete-wrapper\" *ngIf=\"activeUser.userRole == userRoles.admin || activeUser.id == singleArticle.creatorId\">\n        <span class=\"edit\" (click)=\"editArticle(singleArticle,i)\" data-toggle=\"modal\" data-target=\"#articleModal\">Edit</span>\n        <span class=\"delete\" (click)=\"deleteArticle(i)\">Delete</span>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"modal fade\" id=\"articleModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"articleModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"articleModalLabel\">Create Article</h5>\n      </div>\n      <div class=\"modal-body\">\n        <form (ngSubmit)=\"submitArticle(articleForm)\" name=\"articleForm\" #articleForm=\"ngForm\">\n          <div class=\"form-group\">\n            <label for=\"articleTitle\">Article Title</label>\n            <input type=\"text\" class=\"form-control\" name=\"articleTitle\" id=\"articleTitle\" #articleTitle=\"ngModel\" [(ngModel)]=\"articleData.title\"\n              required>\n            <div [hidden]=\"articleTitle.valid || articleTitle.untouched\" class=\"alert-msg\">\n              title is required\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"articleBody\">Article</label>\n            <textarea class=\"form-control\" id=\"articleBody\" name=\"articleBody\" rows=\"3\" #articleBody=\"ngModel\" [(ngModel)]=\"articleData.body\"\n              required></textarea>\n            <div [hidden]=\"articleBody.valid || articleBody.untouched\" class=\"alert-msg\">\n              title is required\n            </div>\n          </div>\n          <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" (click)=\"resetEditAndNewArticle(articleForm)\" #closeModal>Close</button>\n          <button type=\"submit\" *ngIf=\"isNewArticle && !isEditArticle\" [disabled]=\"articleForm.form.invalid\" class=\"btn btn-primary\">Save</button>\n          <button type=\"submit\" *ngIf=\"isEditArticle && !isNewArticle\" [disabled]=\"articleForm.form.invalid\" class=\"btn btn-primary\">Save\n            Changes\n          </button>\n        </form>\n      </div>\n\n    </div>\n  </div>\n</div>"
+module.exports = "<!-- every section of next sections must be in a new component with its inputs and outputs emiters  -->\n<!-- logout button -->\n<div class=\"article-wrapper\">\n  <div class=\"thumbnail biege\">\n    <div class=\"caption create-article log-out\" (click)=\"logout()\">\n      Log out\n    </div>\n  </div>\n</div>\n<!-- end of logout button -->\n<!-- creatorName and creatorRol -->\n<div class=\"article-wrapper\">\n  <div class=\"thumbnail biege\">\n    <div class=\"caption create-article usermame\">\n      <span class=\"role\">{{activeUser.userRole}}</span>\n      <span class=\"user\">({{activeUser.username}})</span>\n    </div>\n  </div>\n</div>\n<!--end of creatorName and creatorRol -->\n\n<!-- add article button -->\n<div class=\"article-wrapper\" *ngIf=\"activeUser.userRole != userRoles.guest\">\n  <div class=\"thumbnail biege\">\n    <div class=\"caption create-article\" data-toggle=\"modal\" data-target=\"#articleModal\" (click)=\"addNewArticle()\"> Create\n      Article\n    </div>\n  </div>\n</div>\n<!--end add article button -->\n\n<!-- articles section -->\n<div class=\"article-wrapper\" *ngFor=\"let singleArticle of articles;let i = index\">\n  <div class=\"thumbnail\" [ngClass]=\"{'my-article': singleArticle.creatorId == activeUser.id || activeUser.userRole == userRoles.admin }\">\n    <div class=\"caption\">\n      <h3>{{singleArticle.title}}</h3>\n      <p>{{singleArticle.body}}</p>\n\n      <div class=\"by-wrapper\">\n        Creator: <span>({{singleArticle.creatorName}})</span>\n      </div>\n      <div class=\"edit-delete-wrapper\" *ngIf=\"activeUser.userRole == userRoles.admin || activeUser.id == singleArticle.creatorId\">\n        <span class=\"edit\" (click)=\"editArticle(singleArticle,i)\" data-toggle=\"modal\" data-target=\"#articleModal\">Edit</span>\n        <span class=\"delete\" (click)=\"deleteArticle(i)\">Delete</span>\n      </div>\n    </div>\n  </div>\n</div>\n<!--end of articles section -->\n\n\n<!-- Modal that add or edit article -->\n<div class=\"modal fade\" id=\"articleModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"articleModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"articleModalLabel\">\n          <span *ngIf=\"isNewArticle && !isEditArticle\"> Create Article</span>\n          <span *ngIf=\"isEditArticle && !isNewArticle\"> Edit Article</span>\n        </h5>\n      </div>\n      <div class=\"modal-body\">\n        <form (ngSubmit)=\"submitArticle(articleForm)\" name=\"articleForm\" #articleForm=\"ngForm\">\n          <div class=\"form-group\">\n            <label for=\"articleTitle\">Article Title</label>\n            <input type=\"text\" class=\"form-control\" name=\"articleTitle\" id=\"articleTitle\" #articleTitle=\"ngModel\" [(ngModel)]=\"articleData.title\"\n              required>\n            <div [hidden]=\"articleTitle.valid || articleTitle.untouched\" class=\"alert-msg\">\n              title is required\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"articleBody\">Article</label>\n            <textarea class=\"form-control\" id=\"articleBody\" name=\"articleBody\" rows=\"3\" #articleBody=\"ngModel\" [(ngModel)]=\"articleData.body\"\n              required></textarea>\n            <div [hidden]=\"articleBody.valid || articleBody.untouched\" class=\"alert-msg\">\n              title is required\n            </div>\n          </div>\n          <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" (click)=\"resetEditAndNewArticle(articleForm)\" #closeModal>Close</button>\n          <button type=\"submit\" *ngIf=\"isNewArticle && !isEditArticle\" [disabled]=\"articleForm.form.invalid\" class=\"btn btn-primary\">Save</button>\n          <button type=\"submit\" *ngIf=\"isEditArticle && !isNewArticle\" [disabled]=\"articleForm.form.invalid\" class=\"btn btn-primary\">\n            Save Changes\n          </button>\n        </form>\n      </div>\n\n    </div>\n  </div>\n</div>\n<!--end Modal that add or edit article -->"
 
 /***/ }),
 
@@ -449,10 +449,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var DashboardComponent = /** @class */ (function () {
+    // declare athenticate and dashboard service
     function DashboardComponent(authenticate, dashboardService) {
         this.authenticate = authenticate;
         this.dashboardService = dashboardService;
         this.articles = [];
+        // data that filled in the modal
         this.articleData = {
             title: '',
             body: ''
@@ -461,15 +463,16 @@ var DashboardComponent = /** @class */ (function () {
         this.isEditArticle = false;
     }
     DashboardComponent.prototype.ngOnInit = function () {
+        // read from UserRoles enum
         this.userRoles = __WEBPACK_IMPORTED_MODULE_3__enums_user_roles_enum__["a" /* UserRoles */];
+        // getting active user
         this.activeUser = JSON.parse(localStorage['activeUser']);
+        // get articles
         if (localStorage['articles']) {
             this.articles = JSON.parse(localStorage['articles']);
         }
     };
-    DashboardComponent.prototype.save = function () {
-        this.closeModal.nativeElement.click();
-    };
+    // edit and create article
     DashboardComponent.prototype.submitArticle = function (articleForm) {
         if (this.isEditArticle) {
             this.editSelectedArticle(articleForm);
@@ -501,6 +504,7 @@ var DashboardComponent = /** @class */ (function () {
         this.resetArticleForm(articleForm);
         this.isNewArticle = false;
     };
+    // reset article form
     DashboardComponent.prototype.resetArticleForm = function (articleForm) {
         articleForm.form.markAsPristine();
         articleForm.form.markAsUntouched();
@@ -510,12 +514,15 @@ var DashboardComponent = /** @class */ (function () {
             body: ''
         };
     };
+    // logout
     DashboardComponent.prototype.logout = function () {
         this.authenticate.logout();
     };
+    // raise new article flag control the modal
     DashboardComponent.prototype.addNewArticle = function () {
         this.isNewArticle = true;
     };
+    // raise edit article flag control the modal
     DashboardComponent.prototype.editArticle = function (article) {
         this.articleData = article;
         this.isEditArticle = true;
