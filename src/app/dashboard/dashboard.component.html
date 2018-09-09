@@ -1,0 +1,77 @@
+<div class="article-wrapper">
+  <div class="thumbnail biege">
+    <div class="caption create-article log-out" (click)="logout()">
+      Log out
+    </div>
+  </div>
+</div>
+
+<div class="article-wrapper">
+  <div class="thumbnail biege">
+    <div class="caption create-article usermame">
+      <span class="role">{{activeUser.userRole}}</span>
+      <span class="user">({{activeUser.username}})</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-wrapper" *ngIf="activeUser.userRole != userRoles.guest">
+  <div class="thumbnail biege">
+    <div class="caption create-article" data-toggle="modal" data-target="#articleModal" (click)="addNewArticle()"> Create
+      Article
+    </div>
+  </div>
+</div>
+
+<div class="article-wrapper" *ngFor="let singleArticle of articles;let i = index">
+  <div class="thumbnail" [ngClass]="{'my-article': singleArticle.creatorId == activeUser.id || activeUser.userRole == userRoles.admin }">
+    <div class="caption">
+      <h3>{{singleArticle.title}}</h3>
+      <p>{{singleArticle.body}}</p>
+
+      <div class="by-wrapper">
+        Creator: <span>({{singleArticle.creatorName}})</span>
+      </div>
+      <div class="edit-delete-wrapper" *ngIf="activeUser.userRole == userRoles.admin || activeUser.id == singleArticle.creatorId">
+        <span class="edit" (click)="editArticle(singleArticle,i)" data-toggle="modal" data-target="#articleModal">Edit</span>
+        <span class="delete" (click)="deleteArticle(i)">Delete</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="articleModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="articleModalLabel">Create Article</h5>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="submitArticle(articleForm)" name="articleForm" #articleForm="ngForm">
+          <div class="form-group">
+            <label for="articleTitle">Article Title</label>
+            <input type="text" class="form-control" name="articleTitle" id="articleTitle" #articleTitle="ngModel" [(ngModel)]="articleData.title"
+              required>
+            <div [hidden]="articleTitle.valid || articleTitle.untouched" class="alert-msg">
+              title is required
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="articleBody">Article</label>
+            <textarea class="form-control" id="articleBody" name="articleBody" rows="3" #articleBody="ngModel" [(ngModel)]="articleData.body"
+              required></textarea>
+            <div [hidden]="articleBody.valid || articleBody.untouched" class="alert-msg">
+              title is required
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetEditAndNewArticle(articleForm)" #closeModal>Close</button>
+          <button type="submit" *ngIf="isNewArticle && !isEditArticle" [disabled]="articleForm.form.invalid" class="btn btn-primary">Save</button>
+          <button type="submit" *ngIf="isEditArticle && !isNewArticle" [disabled]="articleForm.form.invalid" class="btn btn-primary">Save
+            Changes
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

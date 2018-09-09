@@ -1,0 +1,57 @@
+<div class="alert alert-success" *ngIf="showCreateSuccess" role="alert">
+  user has been created successfully!
+</div>
+<br>
+<div class="alert alert-warning" *ngIf="userIsCreatedBefore" role="alert">
+  username is used before!
+</div>
+
+<h2 class="text-center">Create user</h2>
+
+<form class="form-signin" (ngSubmit)="register(signUp)" #signUp="ngForm">
+
+  <div class="form-group">
+    <label for="name">Username</label>
+    <input type="text" class="form-control" id="username" [(ngModel)]="user.username" (ngModelChange)="removeErrors($event)"
+      name="username" #username="ngModel" required>
+    <div [hidden]="username.valid || username.untouched" class="alert-msg">
+      username is required
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" [(ngModel)]="user.password" (ngModelChange)="removeErrors($event)" name="password" class="form-control"
+      id="password" #password="ngModel" required>
+    <div [hidden]="password.valid || password.untouched" class="alert-msg">
+      password is required
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="confirmPassword">Confirm password</label>
+    <input type="password" class="form-control" [(ngModel)]="user.confirmPassword" (ngModelChange)="removeErrors($event)" name="confirmPassword"
+      id="confirmPassword" #confirmPassword="ngModel" required>
+    <div [hidden]="confirmPassword.valid || confirmPassword.untouched" class="alert-msg">
+      confirm password is required
+    </div>
+    <div *ngIf="user.confirmPassword != user.password && confirmPassword.touched" class="alert-msg">
+      confirm password should match password
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="power">User Role</label>
+    <select class="form-control" [(ngModel)]="user.userRole" (ngModelChange)="removeErrors($event)" name="userRole" id="power"
+      required>
+      <option *ngFor="let role of userRoles" [value]="role">{{role}}</option>
+    </select>
+  </div>
+
+  <button class="btn btn-lg btn-success btn-block" [disabled]="signUp.form.invalid || user.confirmPassword != user.password"
+    type="submit">Create</button>
+
+  <button class="btn btn-lg btn-primary btn-block" type="button" (click)="backToLogin()">Back to login</button>
+
+
+</form>

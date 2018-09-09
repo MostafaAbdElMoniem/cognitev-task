@@ -1,0 +1,67 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-wrap: wrap;
+}
+
+.article-wrapper {
+    width: 300px;
+    padding: 10px;
+    padding-bottom: 0;
+}
+
+.my-article {
+    background-color: white;
+}
+
+.article-wrapper h3 {
+    color: #007bff;
+}
+
+.edit-delete-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit {
+    color: #82d882;
+    cursor: pointer;
+}
+
+.delete {
+    color: red;
+    cursor: pointer;
+}
+
+.create-article {
+    color: #4e4cb5;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.log-out {
+    color: red;
+}
+
+.role {
+    color: #b55f5f
+}
+
+.user {
+    color: #82d882
+}
+
+.usermame {
+    cursor: default;
+}
+
+.by-wrapper {
+    color: #ff5722;
+}
+
+.by-wrapper span {
+    color: #795548;
+}
